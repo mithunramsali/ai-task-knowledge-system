@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Task & Knowledge System</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="login-section" class="card">
+            <h1 id="auth-title">AI Task System</h1>
+            <p id="auth-subtitle">Please sign in to continue</p>
+            
+            <div class="form-group">
+                <input type="text" id="username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            
+            <div class="form-group" id="role-group" style="display: none;">
+                <label style="font-size: 12px; color: var(--text-dim); margin-bottom: 5px; display: block;">Select User Role:</label>
+                <select id="role-id" style="width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: white;">
+                    <option value="2">Standard User</option>
+                    <option value="1">Administrator</option>
+                </select>
+            </div>
+
+            <button type="button" id="auth-btn" onclick="handleAuth()">Sign In</button>
+            
+            <p style="margin-top: 15px; font-size: 14px; text-align: center;">
+                <span id="toggle-text">Don't have an account?</span> 
+                <a href="#" onclick="toggleAuthMode()" id="toggle-link" style="color: var(--primary); text-decoration: none; font-weight: bold;">Register here</a>
+            </p>
+
+            <div id="loader" class="spinner" style="display: none;"></div> 
+            <p id="login-error" class="error-text" style="text-align: center;"></p>
+        </div>
+
+        <div id="dashboard-section" class="card" style="display: none; max-width: 700px;">
+            <div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 id="welcome-user">Welcome</h2>
+                <button class="btn-secondary" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="tabs">
+                <button type="button" onclick="showTab('search')">AI Search</button>
+                <button type="button" onclick="showTab('tasks')">My Tasks</button>
+            </div>
+
+            <div id="search-tab" class="tab-content">
+                <h3>Knowledge Base Search</h3>
+                <div class="search-box">
+                    <input type="text" id="search-query" placeholder="Ask a question about the office...">
+                    <button type="button" onclick="performSearch()" style="margin-top: 10px;">Search AI</button>
+                </div>
+                <div id="search-results" class="results-area"></div>
+            </div>
+
+            <div id="tasks-tab" class="tab-content" style="display: none;">
+                <h3>Assigned Tasks</h3>
+                <div id="task-list" class="task-grid"></div>
+            </div>
+
+            <div id="admin-panel" style="display: none; margin-top: 30px; border-top: 2px solid #334155; padding-top: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="color: #8b5cf6; margin: 0;">Admin Control Center</h3>
+                    <button type="button" onclick="downloadActivityReport()" style="width: auto; background: #3b82f6; padding: 8px 15px; font-size: 12px;">
+                        📥 Download Audit PDF
+                    </button>
+                </div>
+
+                <div style="background: #0f172a; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <h4 style="margin-top:0">Registered User Directory</h4>
+                    <button type="button" onclick="fetchUserList()" style="width: auto; background: #3b82f6; padding: 5px 10px; font-size: 12px; margin-bottom: 10px;">Refresh User List</button>
+                    <div id="user-directory-list" style="font-size: 13px; color: var(--text-dim);"></div>
+                </div>
+
+                <div style="background: #0f172a; padding: 15px; border-radius: 8px; margin-top: 20px; margin-bottom: 20px;">
+                    <h4 style="margin-top:0">Global Task Tracker</h4>
+                    <button type="button" onclick="fetchAllTasks()" style="width: auto; background: #3b82f6; padding: 5px 10px; font-size: 12px; margin-bottom: 10px;">Refresh Tracker</button>
+                    <div id="global-task-list" style="font-size: 13px;"></div> </div>
+            
+                <div style="background: #0f172a; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <h4 style="margin-top:0">Assign New Task</h4>
+                    <div class="form-group">
+                        <input type="text" id="task-title" placeholder="Task Title">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="task-desc" placeholder="Task Description">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="task-user-id" placeholder="Target User ID (e.g. 2)">
+                    </div>
+                    <button type="button" onclick="assignTask()" style="background: #10b981;">Confirm Assignment</button>
+                </div>
+
+                <div style="background: #0f172a; padding: 15px; border-radius: 8px;">
+                    <h4 style="margin-top:0">Update Knowledge Base (.txt)</h4>
+                    <input type="file" id="file-input" accept=".txt" style="margin-bottom: 10px; border: none; padding: 0;">
+                    <button type="button" onclick="uploadFile(event)" style="background: #8b5cf6;">Upload & Re-index AI</button>
+                    <p id="admin-msg" style="margin-top: 10px; font-size: 14px; font-weight: 500;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
