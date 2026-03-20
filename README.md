@@ -68,22 +68,6 @@ Upload Knowledge: In the Admin panel, upload a .txt file containing office polic
 
 Search: Log in as a user (Role ID: 2) and ask questions like "What is the policy for lost laptops?".
 
-📂 Project Structure
-Plaintext
-├── app/
-│   ├── main.py          # FastAPI application & API Endpoints
-│   ├── models.py        # SQLAlchemy Database Models
-│   ├── ai_engine.py     # FAISS Indexing & Search Logic
-│   ├── auth.py          # JWT Token & Password Security
-│   ├── database.py      # MySQL Connection Setup
-│   └── schemas.py       # Pydantic Data Validation
-├── frontend/
-│   ├── index.html       # Dashboard & Login UI
-│   ├── style.css        # Custom Dark-themed styling
-│   └── script.js        # Frontend logic & API calls
-├── requirements.txt     # Project dependencies
-└── README.md            # You are here!
-
 🛠️ Troubleshooting
 IndexError: If the search crashes, ensure you have uploaded at least one .txt file to initialize the vector_store.index and metadata.pkl files.
 
